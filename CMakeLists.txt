@@ -4,9 +4,9 @@ project(cpp_fmtlib)
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(cpp_fmtlib STATIC
-        include/logger.cpp
-        include/logger.hpp
-        include/core.hpp)
+        include/fmtlib/logger.cpp
+        include/fmtlib/logger.hpp
+        include/fmtlib/ansi.hpp)
 
 add_library(cpp_fmtlib::fmtlib ALIAS cpp_fmtlib)
 
@@ -25,6 +25,6 @@ if (NOT fmt_FOUND)
     FetchContent_MakeAvailable(fmt)
 endif ()
 
-target_link_libraries(cpp_fmtlib PUBLIC fmt::fmt)
-
 target_include_directories(cpp_fmtlib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(cpp_fmtlib PUBLIC fmt::fmt)

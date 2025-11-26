@@ -2,12 +2,12 @@
 #define CPP_FMTLIB_LOGGER_HPP
 
 #include <cstdio>
+#include <fmt/color.h>
+#include <fmt/format.h>
 #include <mutex>
 #include <string>
 #include <string_view>
 #include <utility>
-
-#include "core.hpp"
 
 namespace fmtlib {
     enum class LogLevel { DEBUG, INFO, WARNING, ERR };
