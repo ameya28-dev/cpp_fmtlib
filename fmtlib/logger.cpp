@@ -7,7 +7,7 @@ fmtlib::LogLevel fmtlib::Logger::log_level = fmtlib::LogLevel::DEBUG;
 std::tuple<fmt::color, std::string> fmtlib::get_logging_style(const LogLevel& level) {
     switch (level) {
     case LogLevel::DEBUG:
-        return {fmt::color::dark_cyan, "DEBUG"};
+        return {fmt::color::royal_blue, "DEBUG"};
     case LogLevel::INFO:
         return {fmt::color::green, "INFO"};
     case LogLevel::WARNING:
