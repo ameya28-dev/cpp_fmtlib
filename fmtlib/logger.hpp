@@ -2,8 +2,10 @@
 #define CPP_FMTLIB_LOGGER_HPP
 
 #include <cstdio>
+#include <fmt/chrono.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
+#include <fmt/std.h>
 #include <mutex>
 #include <string>
 #include <string_view>
@@ -77,7 +79,6 @@ namespace fmtlib {
     template <typename... Args>
     void Logger::log_msg(const LogLevel& level, const std::string_view fmt_str, Args&&... args) {
         auto [color, level_name] = get_logging_style(level);
-
         if (level != LogLevel::ERR) {
             fmt::print(fg(color), "[{}] ", level_name);
             fmt::print(fg(color), "{}\n", fmt::vformat(fmt_str, fmt::make_format_args(args...)));
