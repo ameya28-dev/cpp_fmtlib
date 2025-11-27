@@ -12,17 +12,8 @@ add_library(cpp_fmtlib::fmtlib ALIAS cpp_fmtlib)
 
 set(FMT_MIN_VERSION 12.1.0)
 
-find_package(fmt CONFIG QUIET)
-
-function(IncludeFetchContent)
-    if (NOT DEFINED _FETCHCONTENT_INCLUDED)
-        include(FetchContent)
-        set(_FETCHCONTENT_INCLUDED TRUE CACHE INTERNAL "FetchContent included")
-    endif ()
-endfunction()
-
 function(FetchFMTLibrary)
-    IncludeFetchContent()
+    include(FetchContent)
     FetchContent_Declare(
             fmt
             GIT_REPOSITORY https://github.com/fmtlib/fmt
@@ -31,18 +22,13 @@ function(FetchFMTLibrary)
     FetchContent_MakeAvailable(fmt)
 endfunction()
 
+find_package(fmt ${FMT_MIN_VERSION} CONFIG QUIET)
+
 if (NOT fmt_FOUND)
-    message(STATUS "fmt not found; fetching v${FMT_MIN_VERSION} with FetchContent")
+    message(STATUS "fmt ${fmt_VERSION} >= ${FMT_MIN_VERSION} not found; fetching v${FMT_MIN_VERSION} with FetchContent")
     FetchFMTLibrary()
 else ()
-    if (fmt_VERSION VERSION_LESS FMT_MIN_VERSION)
-        message(STATUS "Version of found fmt ${fmt_VERSION} < ${FMT_MIN_VERSION}; fetching v${FMT_MIN_VERSION} with FetchContent")
-        unset(fmt_FOUND CACHE)
-        unset(fmt_DIR CACHE)
-        FetchFMTLibrary()
-    else ()
-        message(STATUS "found fmt ${fmt_VERSION}; using system version")
-    endif ()
+    message(STATUS "found fmt ${fmt_VERSION}; using system version")
 endif ()
 
 target_include_directories(cpp_fmtlib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
