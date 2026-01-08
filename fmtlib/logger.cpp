@@ -1,10 +1,10 @@
 #include "logger.hpp"
 
-fmtlib::Logger fmtlib::Logger::logger;
+fmtlib::Logger fmtlib::Logger::logger_;
 
-fmtlib::LogLevel fmtlib::Logger::log_level = fmtlib::LogLevel::DEBUG;
+fmtlib::LogLevel fmtlib::Logger::logLevel_ = fmtlib::LogLevel::DEBUG;
 
-std::tuple<fmt::color, std::string> fmtlib::get_logging_style(const LogLevel& level) {
+std::tuple<fmt::color, std::string> fmtlib::getLoggingStyle(const LogLevel& level) {
     switch (level) {
     case LogLevel::DEBUG:
         return {fmt::color::royal_blue, "DEBUG"};
@@ -19,11 +19,11 @@ std::tuple<fmt::color, std::string> fmtlib::get_logging_style(const LogLevel& le
     }
 }
 
-fmtlib::Logger& fmtlib::Logger::get_instance() {
-    return logger;
+fmtlib::Logger& fmtlib::Logger::getInstance() {
+    return logger_;
 }
 
-fmtlib::Logger& fmtlib::Logger::get_instance(const fmtlib::LogLevel& level) {
-    log_level = level;
-    return logger;
+fmtlib::Logger& fmtlib::Logger::getInstance(const fmtlib::LogLevel& level) {
+    logLevel_ = level;
+    return logger_;
 }

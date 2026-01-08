@@ -15,7 +15,7 @@
 namespace fmtlib {
     enum class LogLevel { DEBUG, INFO, WARNING, ERR };
 
-    std::tuple<fmt::color, std::string> get_logging_style(const LogLevel&);
+    std::tuple<fmt::color, std::string> getLoggingStyle(const LogLevel&);
 
     class Logger {
     public:
@@ -24,9 +24,9 @@ namespace fmtlib {
         Logger(Logger&&)                 = delete;
         Logger& operator=(Logger&&)      = delete;
 
-        static Logger& get_instance();
+        static Logger& getInstance();
 
-        static Logger& get_instance(const LogLevel&);
+        static Logger& getInstance(const LogLevel&);
 
         template <typename... Args>
         void debug(std::string_view, Args&&...);
@@ -45,15 +45,15 @@ namespace fmtlib {
         ~Logger() = default;
 
         template <typename... Args>
-        void log_msg(const LogLevel&, std::string_view, Args&&...);
+        void mLogMsg(const LogLevel&, std::string_view, Args&&...);
 
         template <typename... Args>
         void log(const LogLevel&, std::string_view, Args&&...);
 
     private:
-        static Logger logger;
-        std::mutex mtx;
-        static LogLevel log_level;
+        static Logger logger_;
+        std::mutex mtx_;
+        static LogLevel logLevel_;
     };
 
     template <typename... Args>
@@ -78,8 +78,8 @@ namespace fmtlib {
 
 
     template <typename... Args>
-    void Logger::log_msg(const LogLevel& level, const std::string_view fmt_str, Args&&... args) {
-        auto [color, level_name] = get_logging_style(level);
+    void Logger::mLogMsg(const LogLevel& level, const std::string_view fmt_str, Args&&... args) {
+        auto [color, level_name] = getLoggingStyle(level);
         if (level != LogLevel::ERR) {
             fmt::print(fg(color), "[{}] ", level_name);
             fmt::print(fg(color), "{}\n", fmt::vformat(fmt_str, fmt::make_format_args(args...)));
@@ -95,11 +95,11 @@ namespace fmtlib {
 #ifdef NDEBUG
         return;
 #endif
-        if (log_level > level) {
+        if (logLevel_ > level) {
             return;
         }
 
-        std::scoped_lock<std::mutex> lock(mtx);
+        std::scoped_lock<std::mutex> lock(mtx_);
         log_msg(level, fmt_str, std::forward<Args>(args)...);
     }
 } // namespace fmtlib
