@@ -100,7 +100,7 @@ namespace fmtlib {
         }
 
         std::scoped_lock<std::mutex> lock(mtx_);
-        log_msg(level, fmt_str, std::forward<Args>(args)...);
+        mLogMsg(level, fmt_str, std::forward<Args>(args)...);
     }
 } // namespace fmtlib
 
